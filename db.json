@@ -1,0 +1,84 @@
+{
+  "news": [
+    {
+      "id": "3acca416-05bf-4423-9bb6-7a47d164df8e",
+      "heading": "Welcome to the Global News Portal",
+      "category": "General",
+      "content": "This is the main page. Select a continent from the navigation to view specific news.",
+      "source": "Portal Team",
+      "websiteLink": "",
+      "timestamp": "2025-08-01T13:20:25.741Z"
+    }
+  ],
+  "newsCategories": [
+    "General",
+    "Global"
+  ],
+  "africa": {
+    "news": [
+      {
+        "id": "ee98e4ab-bffe-4738-840d-a7bf2ceedff4",
+        "heading": "Test News",
+        "category": "Business",
+        "content": "The relevant section of Cicero as printed in the source is reproduced below with fragments used in Lorem ipsum highlighted. Letters in brackets were added to Lorem ipsum and were not present in the source text:\n\n[32] Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum[d] exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? [D]Quis autem vel eum i[r]ure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?\n\n[33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem reru[d]um facilis est e[r]t expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellend[a]us. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+        "source": "Times of india ",
+        "websiteLink": "",
+        "timestamp": "2025-08-01T15:23:23.019Z"
+      },
+      {
+        "id": "b1a76327-8b92-446c-839a-0460fc64a993",
+        "heading": "News3",
+        "category": "Politics",
+        "content": "News hgwhgiwjgjhjwegjr\ngdgjsg;gag",
+        "source": "Times of india ",
+        "websiteLink": "",
+        "timestamp": "2025-08-01T16:23:29.428Z"
+      },
+      {
+        "id": "85c72c28-1141-460c-b2e3-9df36fa5c24a",
+        "heading": "News2",
+        "category": "Politics",
+        "content": "jkhdguhgjksdaiog",
+        "source": "GEQG",
+        "websiteLink": "",
+        "timestamp": "2025-08-01T16:28:48.852Z"
+      },
+      {
+        "id": "a467e2de-65fd-4f0c-9247-29deebd76bcb",
+        "heading": "add news",
+        "category": "Politics",
+        "content": "AbbdwpfjoiigheigHGHLHADSGG",
+        "source": "Portrt",
+        "websiteLink": "",
+        "timestamp": "2025-08-01T16:31:01.843Z"
+      }
+    ],
+    "newsCategories": [
+      "Politics",
+      "Business"
+    ]
+  },
+  "asia": {
+    "news": [],
+    "newsCategories": [
+      "Technology",
+      "Culture"
+    ]
+  },
+  "australia": {
+    "news": [],
+    "newsCategories": []
+  },
+  "europe": {
+    "news": [],
+    "newsCategories": []
+  },
+  "north-america": {
+    "news": [],
+    "newsCategories": []
+  },
+  "south-america": {
+    "news": [],
+    "newsCategories": []
+  }
+}
