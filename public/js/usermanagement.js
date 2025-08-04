@@ -1,35 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const userForm = document.getElementById('user-form');
-    const originalUserIdInput = document.getElementById('original-user-id');
-    const userIdInput = document.getElementById('user-id-input');
-    const userPasswordInput = document.getElementById('user-password-input');
-    const userRoleSelect = document.getElementById('user-role-select');
+    // --- Global Elements ---
     const userList = document.getElementById('user-list');
-    const formTitle = document.getElementById('user-form-title');
-    const clearFormBtn = document.getElementById('clear-user-form-btn');
-
     let allUsers = [];
+    let currentUserForAction = null;
 
+    // --- API Helper ---
     const api = {
-        get: url => fetch(url).then(res => {
-            if (!res.ok) throw new Error('Failed to fetch');
-            return res.json();
-        }),
+        get: url => fetch(url).then(res => res.ok ? res.json() : Promise.reject(res)),
         post: (url, data) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }),
         put: (url, data) => fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }),
         delete: url => fetch(url, { method: 'DELETE' })
     };
 
+    // --- Modal Elements ---
+    const modals = {
+        add: document.getElementById('add-user-modal'),
+        role: document.getElementById('change-role-modal'),
+        password: document.getElementById('change-password-modal'),
+        delete: document.getElementById('delete-confirm-modal')
+    };
+
+    // --- Form Elements ---
+    const forms = {
+        add: document.getElementById('add-user-form'),
+        role: document.getElementById('change-role-form'),
+        password: document.getElementById('change-password-form')
+    };
+    
+    // --- Main Functions ---
     const renderUsers = () => {
+        if (allUsers.length === 0) {
+            userList.innerHTML = '<p>No users found. Click "Add New User" to begin.</p>';
+            return;
+        }
         userList.innerHTML = allUsers.map(user => `
             <div class="user-list-item">
                 <div class="user-details">
                     <span class="user-id">${user.id}</span>
-                    <span class="user-role">${user.role.replace('-', ' ')}</span>
+                    <span class="user-role">${user.role.replace(/-/g, ' ')}</span>
                 </div>
                 <div class="list-item-actions">
-                    <button class="btn-edit" data-id="${user.id}"><i class="ri-pencil-line"></i></button>
-                    <button class="btn-delete" data-id="${user.id}"><i class="ri-delete-bin-line"></i></button>
+                    <button class="btn-change-role" data-id="${user.id}" title="Change Role"><i class="ri-user-settings-line"></i></button>
+                    <button class="btn-change-password" data-id="${user.id}" title="Change Password"><i class="ri-key-2-line"></i></button>
+                    <button class="btn-delete" data-id="${user.id}" title="Delete User"><i class="ri-delete-bin-line"></i></button>
                 </div>
             </div>
         `).join('');
@@ -45,90 +58,114 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = '/admin.html';
         }
     };
-
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        const originalId = originalUserIdInput.value;
-        const userData = {
-            id: userIdInput.value,
-            password: userPasswordInput.value,
-            role: userRoleSelect.value
-        };
-
-        if (originalId && !userData.password) {
-            delete userData.password;
-        }
-
-        try {
-            let response;
-            if (originalId) {
-                response = await api.put(`/api/users/${encodeURIComponent(originalId)}`, userData);
-            } else {
-                response = await api.post('/api/users', userData);
-            }
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'An error occurred.');
-            }
-
-            resetForm();
-            fetchUsers();
-
-        } catch (error) {
-            alert(`Error saving user: ${error.message}`);
-        }
+    
+    const handleApiError = async (response) => {
+        const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred.' }));
+        alert(`Error: ${errorData.message}`);
     };
 
+    // --- Modal Management ---
+    const openModal = (modalName) => modals[modalName]?.classList.add('show-login');
+    const closeModal = (modalName) => modals[modalName]?.classList.remove('show-login');
+
+    // --- Event Handlers ---
     const handleUserListClick = (e) => {
-        const editBtn = e.target.closest('.btn-edit');
-        const deleteBtn = e.target.closest('.btn-delete');
+        const target = e.target;
+        const userId = target.closest('[data-id]')?.dataset.id;
+        if (!userId) return;
 
-        if (editBtn) {
-            const userId = editBtn.dataset.id;
-            const user = allUsers.find(u => u.id === userId);
-            if (user) {
-                formTitle.textContent = 'Edit User';
-                originalUserIdInput.value = user.id;
-                userIdInput.value = user.id;
-                userRoleSelect.value = user.role;
-                userPasswordInput.value = '';
-                userPasswordInput.placeholder = "Password (leave blank to keep unchanged)";
-                window.scrollTo(0, 0);
-            }
-        }
+        currentUserForAction = allUsers.find(u => u.id === userId);
+        if (!currentUserForAction) return;
 
-        if (deleteBtn) {
-            const userId = deleteBtn.dataset.id;
-            if (confirm(`Are you sure you want to delete the user "${userId}"? This cannot be undone.`)) {
-                deleteUser(userId);
-            }
+        if (target.closest('.btn-change-role')) {
+            document.getElementById('change-role-user-info').textContent = `User: ${currentUserForAction.id}`;
+            document.getElementById('change-role-user-id').value = currentUserForAction.id;
+            document.getElementById('change-role-select').value = currentUserForAction.role;
+            openModal('role');
+        } else if (target.closest('.btn-change-password')) {
+            document.getElementById('change-password-user-info').textContent = `User: ${currentUserForAction.id}`;
+            document.getElementById('change-password-user-id').value = currentUserForAction.id;
+            forms.password.reset();
+            openModal('password');
+        } else if (target.closest('.btn-delete')) {
+            document.getElementById('delete-user-info').textContent = `User: ${currentUserForAction.id}`;
+            openModal('delete');
         }
     };
 
-    const deleteUser = async (userId) => {
-        try {
-            const response = await api.delete(`/api/users/${encodeURIComponent(userId)}`);
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to delete user.');
-            }
-            fetchUsers();
-        } catch (error) {
-            alert(`Error: ${error.message}`);
+    // Add User
+    document.getElementById('add-user-btn').addEventListener('click', () => {
+        forms.add.reset();
+        document.getElementById('add-user-role').value = "";
+        openModal('add');
+    });
+
+    forms.add.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userData = {
+            id: document.getElementById('add-user-email').value,
+            password: document.getElementById('add-user-password').value,
+            role: document.getElementById('add-user-role').value
+        };
+        const response = await api.post('/api/users', userData);
+        if (response.ok) {
+            await fetchUsers();
+            closeModal('add');
+        } else {
+            handleApiError(response);
         }
-    };
+    });
 
-    const resetForm = () => {
-        userForm.reset();
-        originalUserIdInput.value = '';
-        formTitle.textContent = 'Add New User';
-        userPasswordInput.placeholder = "Password";
-    };
+    // Change Role
+    forms.role.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userId = document.getElementById('change-role-user-id').value;
+        const roleData = { role: document.getElementById('change-role-select').value };
+        
+        const response = await api.put(`/api/users/${encodeURIComponent(userId)}`, roleData);
+        if (response.ok) {
+            await fetchUsers();
+            closeModal('role');
+        } else {
+            handleApiError(response);
+        }
+    });
 
-    userForm.addEventListener('submit', handleFormSubmit);
+    // Change Password
+    forms.password.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userId = document.getElementById('change-password-user-id').value;
+        const passwordData = { password: document.getElementById('new-password-input').value };
+
+        const response = await api.put(`/api/users/${encodeURIComponent(userId)}`, passwordData);
+        if (response.ok) {
+            alert('Password updated successfully.');
+            closeModal('password');
+        } else {
+            handleApiError(response);
+        }
+    });
+    
+    // Delete User
+    document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+        if (!currentUserForAction) return;
+        const response = await api.delete(`/api/users/${encodeURIComponent(currentUserForAction.id)}`);
+        if (response.ok) {
+            await fetchUsers();
+            closeModal('delete');
+        } else {
+            handleApiError(response);
+        }
+    });
+    
+    document.getElementById('cancel-delete-btn').addEventListener('click', () => closeModal('delete'));
+
+    // Close Modal Listeners
+    document.querySelectorAll('.login__close').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.modal));
+    });
+
+    // --- Initialization ---
     userList.addEventListener('click', handleUserListClick);
-    clearFormBtn.addEventListener('click', resetForm);
-
     fetchUsers();
 });

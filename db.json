@@ -51,18 +51,49 @@
         "source": "Portrt",
         "websiteLink": "",
         "timestamp": "2025-08-01T16:31:01.843Z"
+      },
+      {
+        "id": "91af82bd-5a90-4691-929d-145f9b2fc8f9",
+        "heading": "news 123",
+        "category": "Business",
+        "content": "qwesrdtfyghuijoyufjydggrg",
+        "source": "heofhwieff",
+        "websiteLink": "",
+        "timestamp": "2025-08-03T10:15:40.339Z"
       }
     ],
     "newsCategories": [
       "Politics",
-      "Business"
+      "Business",
+      "ee"
     ]
   },
   "asia": {
-    "news": [],
+    "news": [
+      {
+        "id": "5e011a60-1479-4f4c-ace0-c33ffb1ca753",
+        "heading": "tr",
+        "category": "Technology",
+        "content": "etwewegwgggg",
+        "source": "",
+        "websiteLink": "",
+        "timestamp": "2025-08-03T10:19:20.226Z"
+      },
+      {
+        "id": "4174deff-fb6a-47fd-8a53-c11aed66a463",
+        "heading": "news 123",
+        "category": "Technology",
+        "content": "assafaf",
+        "source": "safsaf",
+        "websiteLink": "",
+        "timestamp": "2025-08-03T10:30:05.856Z"
+      }
+    ],
     "newsCategories": [
       "Technology",
-      "Culture"
+      "Culture",
+      "sgsdg",
+      "efewfwef"
     ]
   },
   "australia": {

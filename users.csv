@@ -1,3 +1,4 @@
 id,passwordHash,role
-admin@vidyagyan.in,$2b$10$AWp2WDCI7UkGPt5fg8U/au1.xPUy8vB6ug08cViGrmiUQAabhyOTi,editor
-africa@vidyagyan.in,$2b$10$km6TmFeTKr..Q/9QOzjsceg5VrTBb5hiXydWurk.7pfqsN3vuAcyu,africa
+admin@vidyagyan.in,$2b$10$MXPMfWZy6d6z1Qbx3S7bsu53cG7DzPzkn0qTfU6jF7cvYncB35l4O,editor
+user@asia.com,$2b$10$7m3kd6L/8onEYzdv19FD7.2eTgFAWJTV8wszy7h2v9T/FUDRJaATq,asia
+user@africa.com,$2b$10$K2eGlXBmdf2vWOn2nLQnOettVNR3.BxVvSXiv8TOuaFckFHEGDLGm,africa
